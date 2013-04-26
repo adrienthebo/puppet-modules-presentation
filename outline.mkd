@@ -4,7 +4,11 @@ Writing and Sharing Great Modules
 BEST PRACTICES?!?!?!
 --------------------
 
+Traditional programming has had 40+ years to develop best practices
 
+Modern config. mgmt. has been around for 15 years, max
+
+Best practices for config. mgmt. are really in their infancy
 
 Know the patterns
 -----------------
@@ -37,15 +41,15 @@ Semantic versioning aims to help resolve this
 
 Releases match x.y.z
 
-#### Major releases: x.0.0
+#### Major releases: **x**.0.0
 
 Backwards incompatible changes
 
-#### Minor releases: x.y.0
+#### Minor releases: x.**y**.0
 
 Backwards compatible features
 
-#### Patch releases: x.y.z
+#### Patch releases: x.y.**z**
 
 Bugfixes
 
