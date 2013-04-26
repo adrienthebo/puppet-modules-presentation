@@ -1,0 +1,99 @@
+Writing and Sharing Great Modules
+=================================
+
+BEST PRACTICES?!?!?!
+--------------------
+
+
+
+Know the patterns
+-----------------
+
+### Package-file-service
+
+### 'strategy pattern' - for selecting platform specific implementation
+
+Separate logic from data
+------------------------
+
+### Hardcoding
+
+Want to prevent people from reusing your modules?
+
+Hardcode everything!
+
+### Parameters
+
+### Data binding
+
+Use Semantic Versioning
+-----------------------
+
+Breaking the API means nobody will update your module
+
+Semantic versioning aims to help resolve this
+
+### SemVer in a nutshell
+
+Releases match x.y.z
+
+#### Major releases: x.0.0
+
+Backwards incompatible changes
+
+#### Minor releases: x.y.0
+
+Backwards compatible features
+
+#### Patch releases: x.y.z
+
+Bugfixes
+
+### Safety in SemVer
+
+SemVer takes the risk out of upgrading
+
+You can understand the implications of upgrading right away
+
+Reuse, reuse, reuse
+-------------------
+
+Writing good code is hard.
+
+Make other people do your work.
+
+### Get dependencies from the Forge
+
+### Collaborate on existing modules
+
+### Encourage people to publish on the Forge
+
+Polish those modules
+--------------------
+
+### Write a README and provide examples
+
+### Best practices
+
+  * puppet style guide
+  * puppet-lint
+
+Test your manifests with rspec-puppet
+-------------------------------------
+
+  * travis-ci.org
+
+Learn to love types and providers
+---------------------------------
+
+### Why types and providers are your friends
+
+### Test your types and providers
+
+Recruit a community
+-------------------
+
+Congratulations, your module is a hit!
+
+Prepare for a deluge of bug reports and feature requests
+
