@@ -1,21 +1,77 @@
 Writing and Sharing Great Modules
 =================================
 
+Adrien Thebo (@nullfinch)
+Puppet Labs
+
+Who is this guy?
+----------------
+
+IT Operations/Software Development, ~8 years
+
+Operations Engineer @puppetlabs, 2 years
+
+Community Developer @puppetlabs, 3 months
+
+Let's talk about modules
+------------------------
+
 BEST PRACTICES?!?!?!
 --------------------
 
-Traditional programming has had 40+ years to develop best practices
+  * Traditional development: 40+ years to mature
+  * Modern config. mgmt: 15 years, max
 
-Modern config. mgmt. has been around for 15 years, max
+So where do we start?
+---------------------
 
-Best practices for config. mgmt. are really in their infancy
+  * Module structures and patterns
+  * Separate your logic and configuration
+  * Use semantic versioning
 
 Know the patterns
 -----------------
 
 ### Package-file-service
 
-### 'strategy pattern' - for selecting platform specific implementation
+Humble beginnings for many modules
+
+    package { 'nginx':
+      ensure => present,
+    }
+
+    file { '/etc/nginx/nginx.conf':
+      ensure  => present,
+      source  => 'puppet:///modules/nginx/nginx.conf',
+      require => Package['nginx'],
+    }
+
+    service { 'nginx':
+      ensure    => running,
+      enable    => true,
+      subscribe => File['nginx'],
+    }
+
+### Strategy Pattern
+
+Pick your implementation at runtime
+
+    class firewall {
+
+      $strategies = {
+        'OpenBSD' => 'pf',
+        'Solaris' => 'ipfilter',
+        'Linux'   => 'iptables',
+      }
+
+      if $kernel in keys($strategies) {
+        $implementation = $strategies[$kernel]
+        include "firewall::${implementation}"
+      }
+      else {
+        fail("Firewall has no implementation for kernel ${kernel}")
+      }
+    }
 
 Separate logic from data
 ------------------------
@@ -28,7 +84,31 @@ Hardcode everything!
 
 ### Parameters
 
+Bad:
+
+    class redmine::params {
+      # ¯\_(ツ)_/¯
+      $database_server   = '10.14.2.1'
+      $database_user     = 'redmine'
+      $database_password = 'somepassword'
+    }
+
+  * INSECURE DEFAULTS?!?!?!
+
+- - -
+
+Good:
+
+    class redmine::params(
+      $database_server,   # Force the module user to fill this out
+      $database_password, # Fail fast rather than potentially use bad data
+      $database_user = 'redmine' # Sane default
+    ) {
+    }
+
 ### Data binding
+
+Puppet 
 
 Use Semantic Versioning
 -----------------------
