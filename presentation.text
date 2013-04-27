@@ -1,0 +1,305 @@
+title: Writing and Sharing Great Modules on the Forge
+author: @nullfinch
+duration: 45
+
+Who is this guy?
+----------------
+
+  * IT Operations/Software Development, ~8 years
+  * Operations Engineer @puppetlabs, 2 years
+  * Community Developer @puppetlabs, 3 months
+
+Things I do
+-----------
+
+  * puppet-network: cross-platform network configuration
+  * puppet-portage: Puppet <3 Gentoo
+  * r10k: smarter Puppet deployment, powered by robots
+  * vagrant-hosts: it's always a DNS problem
+  * vagrant-pe_build: From zero to PE in `vagrant up`
+
+!SLIDE
+
+Let's talk about modules
+========================
+
+BEST PRACTICES‽
+--------------------
+
+  * Traditional development: 40+ years to mature
+  * Modern config. mgmt: 15 years, max
+  * Best practices haven't yet been established
+
+So where do we start?
+---------------------
+
+  * Separate your logic and configuration
+  * Module structures and patterns
+  * Use semantic versioning
+  * Test everything
+
+!SLIDE
+
+Data/Logic separation
+========================
+
+Separate logic from data
+------------------------
+
+Code != Data
+
+  * Configuring a service the same across platform
+  * Supporting a new platform in a module
+    * Shouldn't have to update every file in a module
+
+Package-file-service
+--------------------
+
+Humble beginnings for many modules
+
+    package { 'nginx':
+      ensure => present,
+    }
+
+    file { '/etc/nginx/nginx.conf':
+      ensure  => present,
+      source  => 'puppet:///modules/nginx/nginx.conf',
+      require => Package['nginx'],
+    }
+
+    service { 'nginx':
+      ensure    => running,
+      enable    => true,
+      subscribe => File['nginx'],
+    }
+
+Hardcoding values
+-----------------
+
+Want to prevent people from reusing your modules?
+
+Hardcode everything!
+
+Using params, bad:
+------------------
+
+Bad:
+
+    class redmine::params {
+      # ¯\_(ツ)_/¯
+      $database_server   = '10.14.2.1'
+      $database_user     = 'redmine'
+      $database_password = 'somepassword'
+    }
+
+  * INSECURE DEFAULTS?!?!?!
+
+Using params, good:
+-------------------
+
+    class redmine::params(
+      $database_server,   # Force the module user to fill this out
+      $database_password, # Fail fast rather than potentially use bad data
+      $database_user = 'redmine' # Sane default
+    ) {
+    }
+
+  * Force user to supply data
+  * Fail fast
+
+!SLIDE
+
+Data Binding
+============
+
+Data Binding
+------------
+
+  * New in Puppet 3: data binding
+  * Provides a method for configuring modules
+
+Using Data Binding
+------------------
+
+  * Define data in a data store
+    * file
+    * database
+    * foreman
+  * Automatically load data in the relevant manifests
+
+Using Data Binding
+------------------
+
+    class redmine::params(
+      $database_server,
+      $database_password,
+      $database_user = 'redmine'
+    ) {
+    }
+
+- - -
+
+    ---
+    redmine::params::database_server: 'my.database.server'
+    redmine::params::database_password: '3yc.267hsf'
+
+
+Know the patterns
+-----------------
+
+### Strategy Pattern
+
+Pick your implementation at runtime
+
+    class firewall {
+
+      $strategies = {
+        'OpenBSD' => 'pf',
+        'Solaris' => 'ipfilter',
+        'Linux'   => 'iptables',
+      }
+
+      if $kernel in keys($strategies) {
+        $implementation = $strategies[$kernel]
+        include "firewall::${implementation}"
+      }
+      else {
+        fail("Firewall has no implementation for kernel ${kernel}")
+      }
+    }
+
+!SLIDE
+
+SemVer
+======
+
+Without Semantic Versioning
+---------------------------
+
+### CHANGELOG
+
+  * 1.0.0 Initial release for managing cacti
+  * 1.1.1 Change server param to servername
+  * 1.1.2 Move params from cacti::data to cacti::params
+  * 1.2.0 Updated README
+  * 1.2.1 Drops support for CentOS 5
+  * 1.3.0 This module now manages munin
+  * 2.0.0 I can update versions whenever I want?
+  * 10.51.100 THIS IS AWESOME!
+  * -4.number.999999999999 I'VE CREATED A MONSTER
+
+Upgrading should be boring
+--------------------------
+
+  * API Breaks mean upgrading is dangerous
+  * Nobody wants to upgrade if it means explosions
+  * Semantic versioning helps mitigate this
+
+SemVer in a nutshell
+--------------------
+
+Releases match the format x.y.z
+
+Major Releases
+--------------
+
+Example: **x**.0.0
+
+Backwards incompatible changes
+
+  * Changing class names
+  * Changing parameter names
+  * Dropping platform support
+
+Minor Releases
+--------------
+
+Example: x.**y**.0
+
+Backwards compatible features
+
+  * Adding support for new platforms
+  * Adding parameters
+  * Adding features
+
+Patch Releases
+--------------
+
+Example: x.y.**z**
+
+Bugfixes
+What is Semantic Versioning?
+----------------------------
+
+  * Version strings should have meaning
+
+What is public?
+---------------
+
+  * Publicly exposed classes
+  * Class parameters
+  * The final behavior of your class
+
+What is private?
+----------------
+
+  * The actual resources used in your classes and defines
+    * Resources themselves are implementation, not 
+  * Classes you mark as private
+    * If you document that a class is private, people shouldn't use it
+
+
+Safety in SemVer
+----------------
+
+### Safety in SemVer
+
+SemVer takes the risk out of upgrading
+
+You can understand the implications of upgrading right away
+
+Working with SemVer
+-------------------
+
+Reuse, reuse, reuse
+-------------------
+
+Writing good code is hard.
+
+Make other people do your work.
+
+### Get dependencies from the Forge
+
+### Collaborate on existing modules
+
+### Encourage people to publish on the Forge
+
+Polish those modules
+--------------------
+
+### Write a README and provide examples
+
+### Best practices
+
+  * puppet style guide
+  * puppet-lint
+
+Test your manifests with rspec-puppet
+-------------------------------------
+
+  * travis-ci.org
+
+Learn to love types and providers
+---------------------------------
+
+### Why types and providers are your friends
+
+### Test your types and providers
+
+Recruit a community
+-------------------
+
+Congratulations, your module is a hit!
+
+Prepare for a deluge of bug reports and feature requests
+
