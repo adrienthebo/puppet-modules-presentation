@@ -168,7 +168,7 @@ Using Data Binding
   * Define data in a data store
     * file
     * database
-    * foreman
+    * Foreman
   * Automatically load data in the relevant manifests
 
 Using Data Binding
@@ -495,3 +495,8 @@ THE END
 ##### Snarky remarks?
 
 ###### Awkward silence?
+
+Credits
+-------
+
+  * Presentation done with reveal.js
