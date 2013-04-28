@@ -1,6 +1,10 @@
+def __DIR__
+  File.expand_path('..', __FILE__)
+end
+
 desc 'Build presentation'
 task :build do
-  sh %{slideshow --h2 --output output --template deck.js presentation.text}
+  sh %{slideshow --h2 --output output --template reveal.js --config #{__DIR__} presentation.text}
   sh %{cp presentation.text output/presentation.txt}
 end
 
