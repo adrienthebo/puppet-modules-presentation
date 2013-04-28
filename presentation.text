@@ -193,16 +193,15 @@ Using Data Binding
 
 !SLIDE
 
-Modules as Interfaces
+Modules as interfaces
 =====================
-
-!SLIDE
 
 Modules as interfaces
 ---------------------
 
   * Puppet simplifies management of services
-  * Provides a single entry point for config
+  * Defines how people interact with that service
+  * Puppet modules define an interface for that service
 ^
   * Creates two challenges
     * What options are supported?
@@ -216,16 +215,16 @@ Be opinionated
 ^
   * Require mandatory data
   * Add parameters for frequently changed data
-  * Add option
+  * Offer an 'override' option
 
-Offer options for overriding
-----------------------------
+But other opinions are nice too
+-------------------------------
 
   * You can't always support every option
-  * Give people the tools they need to make knobs
+  * Allow people to directly insert their own configuration
 
-User supplied templates
------------------------
+Override example: Partial Templates
+-----------------------------------
 
   * Module provides template fragments
   * User assembles these into a full config
@@ -233,23 +232,39 @@ User supplied templates
 Partial template
 ----------------
 
-    <%# Configuration fragment for listening on IPv4 and IPv6 with SSL %>
-    <% unless @sslonly -%>
-      listen   <%= port %>;
-    <%   if scope.lookupvar('::ipaddress6') -%>
-      listen   [::]:<%= port %>;
-    <%   end -%>
-    <% end -%>
+    <%%# nginx/templates/vhost/_listen.conf.erb %>
+    <%%# Configuration fragment for listening on IPv4 and IPv6 with SSL %>
+    <%% unless @sslonly -%>
+      listen   <%%= port %>;
+    <%%   if scope.lookupvar('::ipaddress6') -%>
+      listen   [::]:<%%= port %>;
+    <%%   end -%>
+    <%% end -%>
 
-    <% if ssl -%>
-      listen   <%= ssl_port %> ssl;
-    <%   if scope.lookupvar('::ipaddress6') -%>
-      listen   [::]:<%= ssl_port %> ssl;
-    <%   end -%>
+    <%% if ssl -%>
+      listen   <%%= ssl_port %> ssl;
+    <%%   if scope.lookupvar('::ipaddress6') -%>
+      listen   [::]:<%%= ssl_port %> ssl;
+    <%%   end -%>
+    <%% end -%>
 
-      ssl_certificate      <%= ssl_path %>/certs/<%= ssl_chain%>.cert;
-      ssl_certificate_key  <%= ssl_path %>/private/<%= ssl_key %>.key;
-    <% end -%>
+Using partial templates
+-----------------------
+
+    <%%# my_nginx_app/templates/nginx-vhost.conf.erb %>
+    <%%= scope.function_template(['nginx/vhost/_listen.conf.erb']) %>
+
+      root /usr/share/empty;
+
+      location / {
+        proxy_pass <%%= @proto %>://workers;
+        proxy_redirect        off;
+        proxy_next_upstream   error timeout invalid_header http_500 http_503;
+        proxy_connect_timeout 5;
+      }
+    }
+
+!SLIDE
 
 SemVer
 ======
@@ -272,7 +287,7 @@ Without Semantic Versioning
 Upgrading should be boring
 --------------------------
 
-  * API Breaks mean upgrading is dangerous
+  * API breaks mean upgrading is dangerous
   * Nobody wants to upgrade if it means explosions
   * Semantic versioning helps mitigate this
 
@@ -281,7 +296,7 @@ What is SemVer?
 
   * Version strings should have meaning
   * Releases match the format x.y.z
-  * Values indicate amounts of changes in releases
+  * Values indicate what's changed in that version
 
 Major Releases
 --------------
@@ -327,7 +342,7 @@ What is private?
 
   * The actual resources used in your classes and defines
     * Resources themselves are implementation, not
-  * Classes you mark as private
+  * Classes that are documented as private
     * If you document that a class is private, people shouldn't use it
 
 
@@ -339,8 +354,8 @@ Safety in SemVer
 ^
   * How Puppet does it
     * 3.1.1: Security fixes
-    * 3.2.0: Support for external CAs, OpenWRT support
-    * 4.0.0: Puppet uses tachyons for transport layer
+    * 3.2.0: External CA support, types & providers for OpenWRT
+    * 4.0.0: Tachyon based transport layer
       * Not really.
 
 !SLIDE
@@ -435,8 +450,6 @@ Recruit a community
   * Your module is a hit!
   * Prepare for a deluge of bug reports and feature requests
 
-!SLIDE
-
 Popularity = more work
 ----------------------
 
@@ -455,6 +468,10 @@ Harness your users
   * Ask for pull requests
   * Guide people through the contribution process
 
+!SLIDE
+
+SUMMARY THINGY
+==============
 
 Write awesome modules
 ---------------------
