@@ -1,0 +1,86 @@
+Good morning folks, my name is Adrien Thebo, and I'm going to be speaking about
+how to write awesome modules. It's a very exciting time to be in configuration
+management and we're seeing awesome new developments in this field all the time,
+but since it's such a new field there are a lot of things we're all trying to
+understand. This presentation should provide some strategies for writing modules
+that are cleaner to write, easier to maintain, and make sharing as effortless as
+possible.
+
+Before we launch in, I should probably explain a bit of my background. I got
+into systems administration in 2005 and I've been coding for about as long.
+I would normally go on and on about devops at this point, but Devops days starts
+tomorrow so I'll let someone else handle that.
+
+I started at Puppet Labs in 2011 in the Operations team, maintaining
+infrastructure and developing an ungodly amount of Puppet modules. In February I
+decided that it was time to hop the fence to dev, and now I'm one of the
+community developers that are dedicated to working with contributors to get
+their pull requests merged.
+
+Shockingly enough, I have a number of modules that I develop and maintain these
+days. One of my modules is puppet-network, for handling non-volatile network
+configuration for servers, and the other one that configures portage. I also
+develop on a project called r10k, which is a tool for puppet environment git
+workflow, and can replace librarian-puppet.
+
+I also do development on a number of Vagrant plugins. One is vagrant-hosts which
+handles DNS configuration to make cross-VM communication easy with Vagrant, and
+I also develop vagrant-pe\_build, which allows you to install Puppet Enterprise
+on vagrant boxes as part of the initial provisioning, so that all you need to do
+to rebuild an environment is `vagrant destroy -f && vagrant up`.
+
+Other things I like to do: talk really really really really fast. So seriously,
+if I become completely unintelligible, flag me down.
+
+Sooooo, let's talk about modules.
+
+While traditional software development and configuration management have a lot
+in common, one of the major divisions is the degree of maturity in the field.
+Software development has had 40 years of research and experience to figure out
+design patterns and best practices. Cfengine 2 came out in 1998, so 'modern'
+configuration management has been around for 15 years *tops*, and it's a much
+smaller field than development has been. People frequently ask about 'The One
+True Way' to do things, and right now we kinda shrug our shoulders and say "um,
+do things? Hopefully not bad things?"
+
+Clearly, we need to start somewhere to figure out how to write awesome modules.
+The following are what I've identified as Good Things (TM) that can help write
+awesome modules.
+
+Here are the basic points I'm going to talk about:
+
+First, separate your logic and configuration. Configuring your systems shouldn't
+mean rooting around in modules and touching a bunch of files, and logic/data
+separation makes this easier.
+
+Second, Puppet modules act as 'interfaces' for the services they're managing.
+When you write a module you are deciding what options are available and how
+they can be used, so writing good modules means thinking "how should this module
+be used?"
+
+Third, use semantic versioning. Semantic versioning allows people to use your
+modules and upgrade them without fear of breaking changes, and depend on
+features without guessing.
+
+Lastly, test everything. No, seriously. We're all human and we all make
+mistakes; tests help mitigate human error, catch regressions, and can be used to
+prove that your modules are doing what you expect them to.
+
+Let's start with data/logic separation. It's something that you'll hear, "split
+up your logic and data." what exactly does that mean?
+
+Think of logic as the series of steps that you're going to do to perform an
+action. The logic of a module figures out the ordering and actions.
+
+In contrast data is the sort of 'inert' information, like package names and
+service names and so forth.
+
+So you need both to get anything done, so why split them up? The key lies in how
+we modify these things. If you're configuring a webserver, you generally have a
+set of steps that you need to do, like install the packge, configure it, and
+start it. If you have a Debian system and a Redhat system, you have to do more
+or less the same thing, so the logic for setting up a webserver can be shared.
+However each one has their own package names, configuration directories and so
+forth, so that should be in a separate area. If you make that separation you can
+add other platforms like FreeBSD without having to hack up a bunch of manifests,
+and if you fix a bug in the logic then you fix the bug everywhere.
