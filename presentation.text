@@ -1,4 +1,4 @@
-title: Writing and Sharing Great Modules on the Forge
+title: Writing & Sharing Great Modules on the Forge
 author: @nullfinch
 duration: 45
 
@@ -19,6 +19,13 @@ Things I do
   * vagrant-pe_build: From zero to PE in `vagrant up`
 
 !SLIDE
+
+Other things I do
+-----------------
+
+  * Talk too fast
+  * If I become completely inintelligible
+  * *slow me down*
 
 Let's talk about modules
 ========================
@@ -227,7 +234,11 @@ Patch Releases
 
 Example: x.y.**z**
 
-Bugfixes
+  * Bugfixes
+  * Documentation
+  * Tests
+  * Anything that can't be called a feature
+
 What is Semantic Versioning?
 ----------------------------
 
@@ -244,7 +255,7 @@ What is private?
 ----------------
 
   * The actual resources used in your classes and defines
-    * Resources themselves are implementation, not 
+    * Resources themselves are implementation, not
   * Classes you mark as private
     * If you document that a class is private, people shouldn't use it
 
@@ -252,42 +263,85 @@ What is private?
 Safety in SemVer
 ----------------
 
-### Safety in SemVer
+  * SemVer takes the risk out of upgrading
+  * You can understand the implications of upgrading right away
+^
+  * How Puppet does it
+    * 3.1.1: Security fixes
+    * 3.2.0: Support for external CAs, OpenWRT support
+    * 4.0.0: Puppet uses tachyons for transport layer
 
-SemVer takes the risk out of upgrading
+!SLIDE
 
-You can understand the implications of upgrading right away
+Make other people do your work
+==============================
 
-Working with SemVer
--------------------
+!SLIDE
 
-Reuse, reuse, reuse
--------------------
+AKA
+===
 
-Writing good code is hard.
+!SLIDE
 
-Make other people do your work.
+Reuse Modules
+=============
 
-### Get dependencies from the Forge
+Reuse Modules
+-------------
 
-### Collaborate on existing modules
+  * Writing good code is hard.
+  * Make other people do your work.
+
+Get Dependencies from the Forge
+-------------------------------
+
+    grey% puppet module search postgres
+    Notice: Searching https://forge.puppetlabs.com ...
+    NAME                   DESCRIPTION
+    knowshan-phppgadmin    Install and configure phpPgAdmin
+    DropPod-postgres       A basic type for managing Postgres
+    camptocamp-pgconf      Manage postgresql.conf entries
+    inkling-postgresql     PostgreSQL defined resource types
+    akumria-postgresql     Install and configure the Postgresql
+    puppetlabs-postgresql  PostgreSQL defined resource types
+
+Collaborate on existing modules
+-------------------------------
 
 ### Encourage people to publish on the Forge
 
-Polish those modules
---------------------
+!SLIDE
 
-### Write a README and provide examples
+Best Practices
+==============
 
-### Best practices
+Documentation
+-------------
 
-  * puppet style guide
+  * README
+  * Examples
+
+Conforming to style
+-------------------
+
+  * Puppet Labs style guide
   * puppet-lint
+  * http://www.puppetlinter.com/
+
+!SLIDE
+
+Testing
+=======
 
 Test your manifests with rspec-puppet
 -------------------------------------
 
   * travis-ci.org
+
+!SLIDE
+
+Types and Providers
+===================
 
 Learn to love types and providers
 ---------------------------------
@@ -296,10 +350,34 @@ Learn to love types and providers
 
 ### Test your types and providers
 
+!SLIDE
+
+Establish a Community
+=====================
+
 Recruit a community
 -------------------
 
-Congratulations, your module is a hit!
+  * Your module is a hit!
+  * Prepare for a deluge of bug reports and feature requests
 
-Prepare for a deluge of bug reports and feature requests
+!SLIDE
+
+Popularity = more work
+----------------------
+
+Things users are good at:
+
+  * Finding bugs
+  * Filing feature requests
+  * Requesting things like "documentation"
+  * Finding more bugs
+
+Harness your users
+------------------
+
+  * Bug reports = people care
+  * Show people how to help
+  * Ask for pull requests
+  * Guide people through the contribution process
 
