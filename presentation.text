@@ -1,5 +1,6 @@
-title: Writing & Sharing Great Modules on the Forge
-author: @nullfinch
+title: Writing & Sharing Great Modules
+description: 
+author: @nullfinch, Puppet Labs
 duration: 45
 
 Who is this guy?
@@ -53,7 +54,14 @@ Data/Logic separation
 Separate logic from data
 ------------------------
 
-Code != Data
+Logic != Data
+
+  * Logic: 'the actions needed to get work done'
+    * abstract in nature
+    * series of steps
+    * actionable
+  * Data:  '
+    * provides the concrete bits 
 
   * Configuring a service the same across platform
   * Supporting a new platform in a module
