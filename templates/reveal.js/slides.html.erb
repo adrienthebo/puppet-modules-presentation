@@ -46,6 +46,7 @@
         </section>
 
         <% @slides.each_with_index do |slide, index| %>
+          <section id="slide-<%= index + 2 %>">
             <%= slide.content %>
           </section>
         <% end %>
