@@ -58,9 +58,9 @@
 <h2 id="who-is-this-guy">Who is this guy?</h2>
 
 <ul>
-  <li class="fragment">On/Off Ops/Dev, ~8 years</li>
-  <li class="fragment">Operations Engineer @puppetlabs, 2 years</li>
-  <li class="fragment">Community Developer @puppetlabs, 3 months</li>
+  <li>On/Off Ops/Dev, ~8 years</li>
+  <li>Operations Engineer @puppetlabs, 2 years</li>
+  <li>Community Developer @puppetlabs, 3 months</li>
 </ul>
 
 
@@ -72,11 +72,11 @@
 <h2 id="things-i-do">Things I do</h2>
 
 <ul>
-  <li class="fragment">puppet-network: cross-platform network configuration</li>
-  <li class="fragment">puppet-portage: Puppet ♥ Gentoo</li>
-  <li class="fragment">r10k: smarter Puppet deployment, powered by robots</li>
-  <li class="fragment">vagrant-hosts: it’s always a DNS problem</li>
-  <li class="fragment">vagrant-pe_build: From zero to PE in <code>vagrant up</code></li>
+  <li>puppet-network: cross-platform network configuration</li>
+  <li>puppet-portage: Puppet ♥ Gentoo</li>
+  <li>r10k: smarter Puppet deployment, powered by robots</li>
+  <li>vagrant-hosts: it’s always a DNS problem</li>
+  <li>vagrant-pe_build: From zero to PE in <code>vagrant up</code></li>
 </ul>
 
 
@@ -88,9 +88,9 @@
 <h2 id="other-things-i-do">Other things I do</h2>
 
 <ul>
-  <li class="fragment">Talk too fast</li>
-  <li class="fragment">If I become completely unintelligible</li>
-  <li class="fragment"><em>slow me down</em></li>
+  <li>Talk too fast</li>
+  <li>If I become completely unintelligible</li>
+  <li><em>slow me down</em></li>
 </ul>
 
 
@@ -110,9 +110,9 @@
 <h2 id="best-practices">BEST PRACTICES‽</h2>
 
 <ul>
-  <li class="fragment">Traditional development: 40+ years to mature</li>
-  <li class="fragment">Modern config. mgmt: 15 years, max</li>
-  <li class="fragment">Best practices haven’t yet been established</li>
+  <li>Traditional development: 40+ years to mature</li>
+  <li>Modern config. mgmt: 15 years, max</li>
+  <li>Best practices haven’t yet been established</li>
 </ul>
 
 
@@ -124,11 +124,11 @@
 <h2 id="so-where-do-we-start">So where do we start?</h2>
 
 <ul>
-  <li class="fragment">Separate your logic and configuration</li>
-  <li class="fragment">Know your interface</li>
-  <li class="fragment">Use semantic versioning</li>
-  <li class="fragment">Reuse everything</li>
-  <li class="fragment">Use the community</li>
+  <li>Separate your logic and configuration</li>
+  <li>Know your interface</li>
+  <li>Use semantic versioning</li>
+  <li>Reuse everything</li>
+  <li>Use the community</li>
 </ul>
 
 
@@ -150,8 +150,8 @@
 <p>Logic != Data</p>
 
 <ul>
-  <li class="fragment">Example: configure a service on different platforms</li>
-  <li class="fragment">Shouldn’t have to update every file in a module</li>
+  <li>Example: configure a service on different platforms</li>
+  <li>Shouldn’t have to update every file in a module</li>
 </ul>
 
 
@@ -192,10 +192,10 @@
 <h2 id="problems-with-packagefileservice">Problems with package/file/service</h2>
 
 <ul>
-  <li class="fragment">Nothing inherently wrong</li>
-  <li class="fragment">Overly simple</li>
-  <li class="fragment"><em>Very</em> static</li>
-  <li class="fragment">Generally requires overhaul for different platforms</li>
+  <li>Nothing inherently wrong</li>
+  <li>Overly simple</li>
+  <li><em>Very</em> static</li>
+  <li>Generally requires overhaul for different platforms</li>
 </ul>
 
 
@@ -239,8 +239,8 @@
 <h2 id="hardcoding-tunable-values">Hardcoding tunable values</h2>
 
 <ul>
-  <li class="fragment">Want to prevent people from reusing your modules?</li>
-  <li class="fragment">Hardcode everything!</li>
+  <li>Want to prevent people from reusing your modules?</li>
+  <li>Hardcode everything!</li>
 </ul>
 
 
@@ -260,11 +260,11 @@
 </code></pre>
 
 <ul>
-  <li class="fragment">Params class = good</li>
-  <li class="fragment">Why is this bad?
+  <li>Params class = good</li>
+  <li>Why is this bad?
     <ul>
-      <li class="fragment">Site specific defaults?</li>
-      <li class="fragment">INSECURE DEFAULTS‽</li>
+      <li>Site specific defaults?</li>
+      <li>INSECURE DEFAULTS‽</li>
     </ul>
   </li>
 </ul>
@@ -286,8 +286,8 @@
 </code></pre>
 
 <ul>
-  <li class="fragment">Force user to supply data</li>
-  <li class="fragment">Fail fast</li>
+  <li>Force user to supply data</li>
+  <li>Fail fast</li>
 </ul>
 
 
@@ -307,8 +307,8 @@
 <h2 id="data-binding-1">Data Binding</h2>
 
 <ul>
-  <li class="fragment">New in Puppet 3: data binding</li>
-  <li class="fragment">Provides a method for configuring modules</li>
+  <li>New in Puppet 3: data binding</li>
+  <li>Provides a method for configuring modules</li>
 </ul>
 
 
@@ -320,14 +320,14 @@
 <h2 id="using-data-binding">Using Data Binding</h2>
 
 <ul>
-  <li class="fragment">Define data in a data store
+  <li>Define data in a data store
     <ul>
-      <li class="fragment">file</li>
-      <li class="fragment">database</li>
-      <li class="fragment">Foreman</li>
+      <li>file</li>
+      <li>database</li>
+      <li>Foreman</li>
     </ul>
   </li>
-  <li class="fragment">Automatically load data in the relevant manifests</li>
+  <li>Automatically load data in the relevant manifests</li>
 </ul>
 
 
@@ -374,15 +374,15 @@ mysql::params::allow_hosts: '10.134.8.0/24'
 <h2 id="modules-as-interfaces">Modules as interfaces</h2>
 
 <ul>
-  <li class="fragment">Puppet simplifies management of services</li>
-  <li class="fragment">Defines how people interact with that service</li>
-  <li class="fragment">Puppet modules define an interface for that service</li>
+  <li>Puppet simplifies management of services</li>
+  <li>Defines how people interact with that service</li>
+  <li>Puppet modules define an interface for that service</li>
 </ul>
 <ul>
-  <li class="fragment">Creates two challenges
+  <li>Creates two challenges
     <ul>
-      <li class="fragment">What options are supported?</li>
-      <li class="fragment">What options should users configure?</li>
+      <li>What options are supported?</li>
+      <li>What options should users configure?</li>
     </ul>
   </li>
 </ul>
@@ -396,13 +396,13 @@ mysql::params::allow_hosts: '10.134.8.0/24'
 <h2 id="be-opinionated">Be opinionated</h2>
 
 <ul>
-  <li class="fragment">Cannot make every option tunable</li>
-  <li class="fragment">You’ll go insane</li>
+  <li>Cannot make every option tunable</li>
+  <li>You’ll go insane</li>
 </ul>
 <ul>
-  <li class="fragment">Require mandatory data</li>
-  <li class="fragment">Add parameters for frequently changed data</li>
-  <li class="fragment">Offer an ‘override’ option</li>
+  <li>Require mandatory data</li>
+  <li>Add parameters for frequently changed data</li>
+  <li>Offer an ‘override’ option</li>
 </ul>
 
 
@@ -414,8 +414,8 @@ mysql::params::allow_hosts: '10.134.8.0/24'
 <h2 id="but-other-opinions-are-nice-too">But other opinions are nice too</h2>
 
 <ul>
-  <li class="fragment">You can’t always support every option</li>
-  <li class="fragment">Allow people to directly insert their own configuration</li>
+  <li>You can’t always support every option</li>
+  <li>Allow people to directly insert their own configuration</li>
 </ul>
 
 
@@ -427,8 +427,8 @@ mysql::params::allow_hosts: '10.134.8.0/24'
 <h2 id="override-example-partial-templates">Override example: Partial Templates</h2>
 
 <ul>
-  <li class="fragment">Module provides template fragments</li>
-  <li class="fragment">User assembles these into a full config</li>
+  <li>Module provides template fragments</li>
+  <li>User assembles these into a full config</li>
 </ul>
 
 
@@ -499,15 +499,15 @@ server {
 <h3 id="changelog">CHANGELOG</h3>
 
 <ul>
-  <li class="fragment">1.0.0 Initial release for managing cacti</li>
-  <li class="fragment">1.1.1 Change server param to servername</li>
-  <li class="fragment">1.1.2 Move params from cacti::data to cacti::params</li>
-  <li class="fragment">1.2.0 Updated README</li>
-  <li class="fragment">1.2.1 Drops support for CentOS 5</li>
-  <li class="fragment">1.3.0 This module now manages munin</li>
-  <li class="fragment">2.0.0 I can update versions whenever I want?</li>
-  <li class="fragment">10.51.100 THIS IS AWESOME!</li>
-  <li class="fragment">-4.number.999999999999 I’VE CREATED A MONSTER</li>
+  <li>1.0.0 Initial release for managing cacti</li>
+  <li>1.1.1 Change server param to servername</li>
+  <li>1.1.2 Move params from cacti::data to cacti::params</li>
+  <li>1.2.0 Updated README</li>
+  <li>1.2.1 Drops support for CentOS 5</li>
+  <li>1.3.0 This module now manages munin</li>
+  <li>2.0.0 I can update versions whenever I want?</li>
+  <li>10.51.100 THIS IS AWESOME!</li>
+  <li>-4.number.999999999999 I’VE CREATED A MONSTER</li>
 </ul>
 
 
@@ -519,9 +519,9 @@ server {
 <h2 id="upgrading-should-be-boring">Upgrading should be boring</h2>
 
 <ul>
-  <li class="fragment">API breaks mean upgrading is dangerous</li>
-  <li class="fragment">Nobody wants to upgrade if it means explosions</li>
-  <li class="fragment">Semantic versioning helps mitigate this</li>
+  <li>API breaks mean upgrading is dangerous</li>
+  <li>Nobody wants to upgrade if it means explosions</li>
+  <li>Semantic versioning helps mitigate this</li>
 </ul>
 
 
@@ -533,9 +533,9 @@ server {
 <h2 id="what-is-semver">What is SemVer?</h2>
 
 <ul>
-  <li class="fragment">Version strings should have meaning</li>
-  <li class="fragment">Releases match the format x.y.z</li>
-  <li class="fragment">Values indicate what’s changed in that version</li>
+  <li>Version strings should have meaning</li>
+  <li>Releases match the format x.y.z</li>
+  <li>Values indicate what’s changed in that version</li>
 </ul>
 
 
@@ -551,9 +551,9 @@ server {
 <p>Backwards incompatible changes</p>
 
 <ul>
-  <li class="fragment">Changing class names</li>
-  <li class="fragment">Changing parameter names</li>
-  <li class="fragment">Dropping platform support</li>
+  <li>Changing class names</li>
+  <li>Changing parameter names</li>
+  <li>Dropping platform support</li>
 </ul>
 
 
@@ -569,9 +569,9 @@ server {
 <p>Backwards compatible features</p>
 
 <ul>
-  <li class="fragment">Adding support for new platforms</li>
-  <li class="fragment">Adding parameters</li>
-  <li class="fragment">Adding features</li>
+  <li>Adding support for new platforms</li>
+  <li>Adding parameters</li>
+  <li>Adding features</li>
 </ul>
 
 
@@ -585,10 +585,10 @@ server {
 <p>Example: x.y.<strong>z</strong></p>
 
 <ul>
-  <li class="fragment">Bugfixes</li>
-  <li class="fragment">Documentation</li>
-  <li class="fragment">Tests</li>
-  <li class="fragment">Anything that can’t be called a feature</li>
+  <li>Bugfixes</li>
+  <li>Documentation</li>
+  <li>Tests</li>
+  <li>Anything that can’t be called a feature</li>
 </ul>
 
 
@@ -600,10 +600,10 @@ server {
 <h2 id="semver-as-a-contract">SemVer as a contract</h2>
 
 <ul>
-  <li class="fragment">If you use SemVer, you’re making an agreement to avoid making breaking changes</li>
-  <li class="fragment">What is a breaking change?</li>
-  <li class="fragment">What’s public?</li>
-  <li class="fragment">What’s private?</li>
+  <li>If you use SemVer, you’re making an agreement to avoid making breaking changes</li>
+  <li>What is a breaking change?</li>
+  <li>What’s public?</li>
+  <li>What’s private?</li>
 </ul>
 
 
@@ -615,9 +615,9 @@ server {
 <h2 id="what-is-public">What is public?</h2>
 
 <ul>
-  <li class="fragment">Publicly exposed classes</li>
-  <li class="fragment">Class parameters</li>
-  <li class="fragment">The final behavior of your class</li>
+  <li>Publicly exposed classes</li>
+  <li>Class parameters</li>
+  <li>The final behavior of your class</li>
 </ul>
 
 
@@ -629,14 +629,14 @@ server {
 <h2 id="what-is-private">What is private?</h2>
 
 <ul>
-  <li class="fragment">The actual resources used in your classes and defines
+  <li>The actual resources used in your classes and defines
     <ul>
-      <li class="fragment">Resources themselves are implementation, not</li>
+      <li>Resources themselves are implementation, not</li>
     </ul>
   </li>
-  <li class="fragment">Classes that are documented as private
+  <li>Classes that are documented as private
     <ul>
-      <li class="fragment">If you document that a class is private, people shouldn’t use it</li>
+      <li>If you document that a class is private, people shouldn’t use it</li>
     </ul>
   </li>
 </ul>
@@ -650,17 +650,17 @@ server {
 <h2 id="safety-in-semver">Safety in SemVer</h2>
 
 <ul>
-  <li class="fragment">SemVer takes the risk out of upgrading</li>
-  <li class="fragment">You can understand the implications of upgrading right away</li>
+  <li>SemVer takes the risk out of upgrading</li>
+  <li>You can understand the implications of upgrading right away</li>
 </ul>
 <ul>
-  <li class="fragment">How Puppet does it
+  <li>How Puppet does it
     <ul>
-      <li class="fragment">3.1.1: Security fixes</li>
-      <li class="fragment">3.2.0: External CA support, types &amp; providers for OpenWRT</li>
-      <li class="fragment">4.0.0: Tachyon based transport layer
+      <li>3.1.1: Security fixes</li>
+      <li>3.2.0: External CA support, types &amp; providers for OpenWRT</li>
+      <li>4.0.0: Tachyon based transport layer
         <ul>
-          <li class="fragment">Not really.</li>
+          <li>Not really.</li>
         </ul>
       </li>
     </ul>
@@ -700,8 +700,8 @@ server {
 <h2 id="reuse-modules-1">Reuse Modules</h2>
 
 <ul>
-  <li class="fragment">Writing good code is hard.</li>
-  <li class="fragment">Make other people do your work.</li>
+  <li>Writing good code is hard.</li>
+  <li>Make other people do your work.</li>
 </ul>
 
 
@@ -713,8 +713,8 @@ server {
 <h2 id="discovery-via-the-forge">Discovery via the Forge</h2>
 
 <ul>
-  <li class="fragment">Puppet Forge has 1000+ modules</li>
-  <li class="fragment">Provides a single point to discover and install modules</li>
+  <li>Puppet Forge has 1000+ modules</li>
+  <li>Provides a single point to discover and install modules</li>
 </ul>
 
 
@@ -745,9 +745,9 @@ puppetlabs-postgresql  PostgreSQL defined resource types
 <h2 id="collaborate-on-existing-modules">Collaborate on existing modules</h2>
 
 <ul>
-  <li class="fragment">Lots of good modules are out there</li>
-  <li class="fragment">Encourage people to publish on the Forge</li>
-  <li class="fragment">Help improve existing modules</li>
+  <li>Lots of good modules are out there</li>
+  <li>Encourage people to publish on the Forge</li>
+  <li>Help improve existing modules</li>
 </ul>
 
 
@@ -759,9 +759,9 @@ puppetlabs-postgresql  PostgreSQL defined resource types
 <h2 id="small-contributions-help">Small contributions help</h2>
 
 <ul>
-  <li class="fragment">Documentation</li>
-  <li class="fragment">Bug fixes</li>
-  <li class="fragment">Issue reports</li>
+  <li>Documentation</li>
+  <li>Bug fixes</li>
+  <li>Issue reports</li>
 </ul>
 
 
@@ -781,8 +781,8 @@ puppetlabs-postgresql  PostgreSQL defined resource types
 <h2 id="surviving-success">Surviving success</h2>
 
 <ul>
-  <li class="fragment">Your module is a hit!</li>
-  <li class="fragment">Prepare for a deluge of bug reports and feature requests</li>
+  <li>Your module is a hit!</li>
+  <li>Prepare for a deluge of bug reports and feature requests</li>
 </ul>
 
 
@@ -796,13 +796,13 @@ puppetlabs-postgresql  PostgreSQL defined resource types
 <p>Things users are good at:</p>
 
 <ul>
-  <li class="fragment">Finding bugs</li>
-  <li class="fragment">Filing feature requests</li>
-  <li class="fragment">Requesting things like “documentation”</li>
-  <li class="fragment">Finding more bugs</li>
+  <li>Finding bugs</li>
+  <li>Filing feature requests</li>
+  <li>Requesting things like “documentation”</li>
+  <li>Finding more bugs</li>
 </ul>
 <ul>
-  <li class="fragment">Funny how these match how you can help other contributors</li>
+  <li>Funny how these match how you can help other contributors</li>
 </ul>
 
 
@@ -814,10 +814,10 @@ puppetlabs-postgresql  PostgreSQL defined resource types
 <h2 id="harness-your-users">Harness your users</h2>
 
 <ul>
-  <li class="fragment">Bug reports = people care</li>
-  <li class="fragment">Show people how to help</li>
-  <li class="fragment">Ask for pull requests</li>
-  <li class="fragment">Guide people through the contribution process</li>
+  <li>Bug reports = people care</li>
+  <li>Show people how to help</li>
+  <li>Ask for pull requests</li>
+  <li>Guide people through the contribution process</li>
 </ul>
 
 
@@ -845,7 +845,7 @@ puppetlabs-postgresql  PostgreSQL defined resource types
 <h2 id="credits">Credits</h2>
 
 <ul>
-  <li class="fragment">Presentation done with reveal.js</li>
+  <li>Presentation done with reveal.js</li>
 </ul>
 <!-- === end markdown block ===================================================== -->
 
