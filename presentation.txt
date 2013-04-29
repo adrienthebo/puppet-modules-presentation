@@ -274,7 +274,7 @@ SemVer
 Without Semantic Versioning
 ---------------------------
 
-### CHANGELOG
+A cautionary tale of versioning gone bad
 
   * 1.0.0 Initial release for managing cacti
   * 1.1.1 Change `server` param to `servername`
