@@ -14,14 +14,15 @@ task :deploy => [:build] do
 
   Dir.mktmpdir do |tmp|
     commands = <<-EOS
-      cp -r output #{tmp}/
-      git checkout gh-pages
-      cp -r #{tmp}/output/* .
-      cp presentation.html index.html
-      git add index.html presentation.html presentation.txt images
-      git commit -m 'Update'
+      git init --reference #{__DIR__} git@github.com:adrienthebo/puppet-modules-presentation"
+      git checkout -b gh-pages origin/gh-pages
+      cp -r #{__DIR__}/output/* #{tmp}/
+      cd #{tmp}
+      git add .
+      git ci -a -m 'gh-pages update via rake task'
       git push
-      git checkout master
+      cd
+      rm -rf #{tmp}"
     EOS
 
     commands.split("\n").each {|ell| sh ell.strip}
