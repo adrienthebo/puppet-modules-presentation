@@ -1,7 +1,6 @@
 title: Writing & Sharing Great Modules
 author: Adrien Thebo, Puppet Labs
-twitter: @nullfinch
-freenode: finch
+contact: Twitter: @nullfinch | Freenode: finch
 
 Who is this guy?
 ----------------
