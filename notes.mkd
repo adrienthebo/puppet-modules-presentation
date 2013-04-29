@@ -62,9 +62,14 @@ Third, use semantic versioning. Semantic versioning allows people to use your
 modules and upgrade them without fear of breaking changes, and depend on
 features without guessing.
 
-Lastly, test everything. No, seriously. We're all human and we all make
-mistakes; tests help mitigate human error, catch regressions, and can be used to
-prove that your modules are doing what you expect them to.
+Fourth, reuse as much as you can. Writing modules is hard. Writing good modules
+is harder. If you can improve an existing module then you get the features you
+want without having to maintain another module, and another author gets
+improvement to their work.
+
+Last, use the community. We've got a lot of great people in this community with
+a huge amount of expertise, so if you can draw them in to help you, we'll all be
+in a better place.
 
 Let's start with data/logic separation. It's something that you'll hear, "split
 up your logic and data." what exactly does that mean?
@@ -132,4 +137,18 @@ by abstracting that away and providing parameterized classes and options, you
 are building an interface to that service. In effect, you are deciding how end
 users will use that service.
 
-This is a pretty powerful thing, but it has some consequences.
+This is a pretty powerful thing, but it has some consequences. Since you're
+creating this interface of sorts, you're going to have to decide how much of the
+underlying service you're going to expose. For instance, if you try to create a
+module for managing squid... good luck. There are tons of options and it's a
+monster to organize them all. Alternately, you can offer a limited subset of
+that, but then how do people use the features that you've decided aren't
+important enough?
+
+The pragmatic solution for this is to be opinionated. With any sort of
+non-trivial application, you cannot support every option. You'll go barking mad.
+The best that you can do is try to support reasonably common cases. Figure out
+what options the user must specify, and make them mandatory parameters and don't
+specify a default. For everything else that the user should tune, add parameters
+but use sane defaults where you can. Where possible, try to use the application
+defaults if there's no good reason to tune them.
