@@ -70,17 +70,66 @@ Let's start with data/logic separation. It's something that you'll hear, "split
 up your logic and data." what exactly does that mean?
 
 Think of logic as the series of steps that you're going to do to perform an
-action. The logic of a module figures out the ordering and actions.
+action. The logic of a module figures out the ordering and actions. With no
+information
 
-In contrast data is the sort of 'inert' information, like package names and
-service names and so forth.
+In contrast, data is just data. Package names, file locations, and so forth.
 
-So you need both to get anything done, so why split them up? The key lies in how
-we modify these things. If you're configuring a webserver, you generally have a
-set of steps that you need to do, like install the packge, configure it, and
-start it. If you have a Debian system and a Redhat system, you have to do more
-or less the same thing, so the logic for setting up a webserver can be shared.
-However each one has their own package names, configuration directories and so
-forth, so that should be in a separate area. If you make that separation you can
-add other platforms like FreeBSD without having to hack up a bunch of manifests,
-and if you fix a bug in the logic then you fix the bug everywhere.
+So you need both to get anything done, so why split them up?
+
+The key lies in how we modify these things. If you're configuring a webserver,
+you generally have a set of steps that you need to do, like install the package,
+configure it, and start it. If you have a Debian system and a Redhat system, you
+have to do more or less the same thing, so the logic for setting up a webserver
+can be shared.  However each one has their own package names, configuration
+directories and so forth, so that should be in a separate area. If you make that
+separation you can add other platforms like FreeBSD without having to hack up a
+bunch of manifests, and if you fix a bug in the logic then you fix the bug
+everywhere.
+
+The traditional package/file/service pattern is a good example of this.
+Something like this is one of the most basic modules you'll get that's fairly
+useful, and a lot of modules start out like this. It's hardcode city, but until
+you need to support a couple of platforms it'll do.
+
+However, once you start hitting that point of adding conditionals based on the
+platform for what packages and files to use, stop. Just stop. Make a params
+class. Extract the data. It'll save you maintenance time in the end.
+
+So who likes to prevent module reuse? Anyone? Anyone? Take it from me, the best
+way to turn people away from your modules is to hardcode EVERYTHING and make
+people hand-edit your module to make things work.
+
+For example, we could have a params class like this. If someone doesn't inspect
+the `params` class closely, they'll use a terrible default password, open to the
+world, and they will get owned so hard, so fast. This is Real Bad. So yay, we're
+using a params class, but there's no direct way to edit it and it's trying to
+use default values for things that _shouldn't_ have default values.
+
+Alternately, we can used class parameters on a parameterized class like this.
+With this configuration the user _must_ fill out the relevant fields or the
+module will fail to compile. Failing fast is much better than silently doing the
+wrong thing.
+
+Data binding is also another major tool to help manage code/data separation to
+get clean modules. Data binding was released in Puppet 3 and allows
+configuration data to be loaded from one place and injected into your modules.
+Parameterized classes solved part of the problem with data/code separation in
+that they let you specify configuration data outside of a manifest, but another
+manifest would have to have that data. With data binding, your classes can
+handle the logic of class composition, and your data can be handled somewhere
+else.
+
+To take a look at data binding, we can go back to the mysql example. We still
+use the same syntax for the parameterized class, but now when a class is
+evaluated it can automatically do a data lookup for parameters with no
+explicitly given parameter.
+
+This brings us to another important topic: using modules as interfaces. Puppet
+serves to simply the management of services by abstracting away configuration
+file formats, restarting services and installing packages and so forth. However,
+by abstracting that away and providing parameterized classes and options, you
+are building an interface to that service. In effect, you are deciding how end
+users will use that service.
+
+This is a pretty powerful thing, but it has some consequences.

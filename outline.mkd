@@ -1,8 +1,6 @@
-Writing and Sharing Great Modules
-=================================
-
-Adrien Thebo (@nullfinch)
-Puppet Labs
+title: Writing and Sharing Great Modules on the Forge
+author: @nullfinch
+duration: 45
 
 Who is this guy?
 ----------------
@@ -25,12 +23,21 @@ BEST PRACTICES?!?!?!
 So where do we start?
 ---------------------
 
-  * Module structures and patterns
   * Separate your logic and configuration
+  * Module structures and patterns
   * Use semantic versioning
+  * Test everything
 
-Know the patterns
------------------
+Separate logic from data
+========================
+
+Separate logic from data
+------------------------
+
+Code != Data
+
+  * Supporting a new platform in a module
+    * Shouldn't have to update every file in a module
 
 ### Package-file-service
 
@@ -52,31 +59,8 @@ Humble beginnings for many modules
       subscribe => File['nginx'],
     }
 
-### Strategy Pattern
-
-Pick your implementation at runtime
-
-    class firewall {
-
-      $strategies = {
-        'OpenBSD' => 'pf',
-        'Solaris' => 'ipfilter',
-        'Linux'   => 'iptables',
-      }
-
-      if $kernel in keys($strategies) {
-        $implementation = $strategies[$kernel]
-        include "firewall::${implementation}"
-      }
-      else {
-        fail("Firewall has no implementation for kernel ${kernel}")
-      }
-    }
-
-Separate logic from data
-------------------------
-
-### Hardcoding
+Hardcoding values
+-----------------
 
 Want to prevent people from reusing your modules?
 
@@ -108,36 +92,123 @@ Good:
 
 ### Data binding
 
-Puppet 
+Puppet 3 adds data binding
+
+In layman's terms...
+
+  * Define data in a data store
+    * file
+    * database
+    * foreman
+  * Automatically load data in the relevant manifests
+
+Know the patterns
+-----------------
+
+### Strategy Pattern
+
+Pick your implementation at runtime
+
+    class firewall {
+
+      $strategies = {
+        'OpenBSD' => 'pf',
+        'Solaris' => 'ipfilter',
+        'Linux'   => 'iptables',
+      }
+
+      if $kernel in keys($strategies) {
+        $implementation = $strategies[$kernel]
+        include "firewall::${implementation}"
+      }
+      else {
+        fail("Firewall has no implementation for kernel ${kernel}")
+      }
+    }
+
 
 Use Semantic Versioning
 -----------------------
 
-Breaking the API means nobody will update your module
+    CHANGELOG
 
-Semantic versioning aims to help resolve this
+    1.0.0 Initial release for managing cacti
+    1.1.1 Change server param to servername
+    1.1.2 Move params from cacti::data to cacti::params
+    1.2.0 Updated README
+    1.3.0 Added examples
+    1.3.1 Drops support for CentOS 5
+    1.4.0 This module now manages munin
+    2.0.0 Updated version number because lol
+    2.1.5 I can update versions whenever I want?
+    10.51.100 THIS IS AWESOME!
+    -4.number.999999999999 I'VE CREATED A MONSTER
+
+Don't make upgrading an adventure
+---------------------------------
+
+  * Breaking the API means nobody will update your module
+  * Semantic versioning aims to help resolve this
+
+What is public?
+---------------
+
+  * Publicly exposed classes
+  * Class parameters
+  * The final behavior of your class
+
+What is private?
+----------------
+
+  * The actual resources used in your classes and defines
+    * Resources themselves are implementation, not 
+  * Classes you mark as private
+    * If you document that a class is private, people shouldn't use it
 
 ### SemVer in a nutshell
 
-Releases match x.y.z
+Releases match the format x.y.z
 
-#### Major releases: **x**.0.0
+Major Releases
+--------------
+
+Example: **x**.0.0
 
 Backwards incompatible changes
 
-#### Minor releases: x.**y**.0
+  * Changing class names
+  * Changing parameter names
+  * Dropping platform support
+
+Minor Releases
+--------------
+
+Example: x.**y**.0
 
 Backwards compatible features
 
-#### Patch releases: x.y.**z**
+  * Adding support for new platforms
+  * Adding parameters
+  * Adding features
+
+Patch Releases
+--------------
+
+Example: x.y.**z**
 
 Bugfixes
+
+Safety in SemVer
+----------------
 
 ### Safety in SemVer
 
 SemVer takes the risk out of upgrading
 
 You can understand the implications of upgrading right away
+
+Working with SemVer
+-------------------
 
 Reuse, reuse, reuse
 -------------------

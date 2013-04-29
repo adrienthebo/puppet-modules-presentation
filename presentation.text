@@ -14,7 +14,7 @@ Things I do
 -----------
 
   * puppet-network: cross-platform network configuration
-  * puppet-portage: Puppet <3 Gentoo
+  * puppet-portage: Puppet ♥ Gentoo
   * r10k: smarter Puppet deployment, powered by robots
   * vagrant-hosts: it's always a DNS problem
   * vagrant-pe_build: From zero to PE in `vagrant up`
@@ -56,16 +56,8 @@ Separate logic from data
 
 Logic != Data
 
-  * Logic: 'the actions needed to get work done'
-    * abstract in nature
-    * series of steps
-    * actionable
-  * Data:  '
-    * provides the concrete bits 
-
-  * Configuring a service the same across platform
-  * Supporting a new platform in a module
-    * Shouldn't have to update every file in a module
+  * Example: configure a service on different platforms
+  * Shouldn't have to update every file in a module
 
 Package/file/service
 --------------------
@@ -127,16 +119,15 @@ Rudimentary Data/Logic separation
 Hardcoding tunable values
 -------------------------
 
-Want to prevent people from reusing your modules?
-
-Hardcode everything!
+  * Want to prevent people from reusing your modules?
+  * Hardcode everything!
 
 Using params, bad:
 ------------------
 
     class mysql::params {
       $allow_hosts   = '0.0.0.0/0'
-      $root_user     = 'redmine'
+      $root_user     = 'root'
       # ¯\_(ツ)_/¯
       $root_password = 'changeme'
     }
@@ -152,7 +143,7 @@ Using params, good:
     class mysql::params(
       $allow_hosts,   # Force the module user to fill this out
       $root_password, # Fail fast rather than potentially use bad data
-      $root_user = 'redmine' # Sane default
+      $root_user = 'root' # Sane default
     ) {
     }
 
@@ -182,10 +173,10 @@ Using Data Binding
 Using Data Binding
 ------------------
 
-    class nrpe::params(
+    class mysql::params(
       $allow_hosts,
       $database_password,
-      $database_user = 'redmine'
+      $database_user = 'root'
     ) {
     }
 
@@ -193,16 +184,16 @@ Using Data Binding
 
     # $datadir/common.yaml
     ---
-    nrpe::params::allow_hosts: '10.126.8.0/24'
+    mysql::params::allow_hosts: '10.126.8.0/24'
 ^
     # $datadir/qa.mysite.local.yaml
     ---
-    nrpe::params::allow_hosts: '10.134.8.0/24'
+    mysql::params::allow_hosts: '10.134.8.0/24'
 
 !SLIDE
 
-Modules as interfaces
-=====================
+Using modules as interfaces
+===========================
 
 Modules as interfaces
 ---------------------
@@ -237,8 +228,8 @@ Override example: Partial Templates
   * Module provides template fragments
   * User assembles these into a full config
 
-Partial template
-----------------
+Creating a partial template
+---------------------------
 
     <%%# nginx/templates/vhost/_listen.conf.erb %>
     <%%# Configuration fragment for listening on IPv4 and IPv6 with SSL %>
@@ -259,7 +250,9 @@ Partial template
 Using partial templates
 -----------------------
 
-    <%%# my_nginx_app/templates/nginx-vhost.conf.erb %>
+    Example: `my_nginx_app/templates/nginx-vhost.conf.erb`
+
+    server {
     <%%= scope.function_template(['nginx/vhost/_listen.conf.erb']) %>
 
       root /usr/share/empty;
@@ -493,8 +486,10 @@ Share awesome modules
 
   * Publish modules on the Puppet Forge
 
-THE END
--------
+!SLIDE
+
+END
+===
 
 ### Questions?
 
@@ -502,7 +497,7 @@ THE END
 
 ##### Snarky remarks?
 
-###### Awkward silence?
+##### <small>Awkward silence?</small>
 
 Credits
 -------
