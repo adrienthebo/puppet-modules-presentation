@@ -23,7 +23,7 @@ Other things I do
 -----------------
 
   * Talk too fast
-  * If I become completely inintelligible
+  * If I become completely unintelligible
   * *slow me down*
 
 !SLIDE
@@ -44,7 +44,8 @@ So where do we start?
   * Separate your logic and configuration
   * Know your interface
   * Use semantic versioning
-  * Test everything
+  * Reuse everything
+  * Use the community
 
 !SLIDE
 
@@ -427,18 +428,6 @@ Test your manifests with rspec-puppet
 -------------------------------------
 
   * travis-ci.org
-
-!SLIDE
-
-Types and Providers
-===================
-
-Learn to love types and providers
----------------------------------
-
-### Why types and providers are your friends
-
-### Test your types and providers
 
 !SLIDE
 
