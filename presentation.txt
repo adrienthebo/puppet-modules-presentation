@@ -251,7 +251,7 @@ Creating a partial template
 Using partial templates
 -----------------------
 
-    Example: `my_nginx_app/templates/nginx-vhost.conf.erb`
+Example: `my_nginx_app/templates/nginx-vhost.conf.erb`
 
     server {
     <%%= scope.function_template(['nginx/vhost/_listen.conf.erb']) %>
@@ -277,7 +277,7 @@ Without Semantic Versioning
 ### CHANGELOG
 
   * 1.0.0 Initial release for managing cacti
-  * 1.1.1 Change server param to servername
+  * 1.1.1 Change `server` param to `servername`
   * 1.1.2 Move params from cacti::data to cacti::params
   * 1.2.0 Updated README
   * 1.2.1 Drops support for CentOS 5
