@@ -6,6 +6,8 @@ desc 'Build presentation'
 task :build do
   sh %{slideshow --h2 --output output --template reveal.js --config #{__DIR__} presentation.text}
   sh %{cp presentation.text output/presentation.txt}
+  sh %{sed -ie 's/<li>/<li class="fragment">/g' output/presentation.html}
+  sh %{cp output/presentation.html output/index.html}
 end
 
 require 'tmpdir'
