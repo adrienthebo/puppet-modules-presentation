@@ -363,6 +363,7 @@ Safety in SemVer
   * You can understand the implications of upgrading right away
 ^
   * How Puppet does it
+    * 3.1.0: Better support for Ruby code loading
     * 3.1.1: Security fixes
     * 3.2.0: External CA support, types & providers for OpenWRT
     * 4.0.0: Tachyon based transport layer
@@ -394,6 +395,10 @@ Discovery via the Forge
 
   * Puppet Forge has 1000+ modules
   * Provides a single point to discover and install modules
+  * Easy access to documentation
+    * README
+    * CHANGELOG
+    * Type & provider documentation
 
 Get Dependencies from the Forge
 -------------------------------
@@ -414,6 +419,7 @@ Collaborate on existing modules
   * Lots of good modules are out there
   * Encourage people to publish on the Forge
   * Help improve existing modules
+  * Onl you can prevent ecosystem fragmentation
 
 Small contributions help
 ------------------------
