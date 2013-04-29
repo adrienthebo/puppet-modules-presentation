@@ -251,7 +251,7 @@ Creating a partial template
 Using partial templates
 -----------------------
 
-    Example: `my_nginx_app/templates/nginx-vhost.conf.erb`
+Example: `my_nginx_app/templates/nginx-vhost.conf.erb`
 
     server {
     <%%= scope.function_template(['nginx/vhost/_listen.conf.erb']) %>
@@ -332,6 +332,14 @@ Example: x.y.**z**
   * Tests
   * Anything that can't be called a feature
 
+SemVer as a contract
+--------------------
+
+  * If you use SemVer, you're making an agreement to avoid making breaking changes
+  * What is a breaking change?
+  * What's public?
+  * What's private?
+
 What is public?
 ---------------
 
@@ -381,6 +389,12 @@ Reuse Modules
   * Writing good code is hard.
   * Make other people do your work.
 
+Discovery via the Forge
+-----------------------
+
+  * Puppet Forge has 1000+ modules
+  * Provides a single point to discover and install modules
+
 Get Dependencies from the Forge
 -------------------------------
 
@@ -401,40 +415,19 @@ Collaborate on existing modules
   * Encourage people to publish on the Forge
   * Help improve existing modules
 
-!SLIDE
+Small contributions help
+------------------------
 
-Best Practices
-==============
-
-Documentation
--------------
-
-  * README
-  * Examples
-
-Conforming to style
--------------------
-
-  * Puppet Labs style guide
-  * puppet-lint
-  * http://www.puppetlinter.com/
-
-!SLIDE
-
-Testing
-=======
-
-Test your manifests with rspec-puppet
--------------------------------------
-
-  * travis-ci.org
+  * Documentation
+  * Bug fixes
+  * Issue reports
 
 !SLIDE
 
 Establish a Community
 =====================
 
-Recruit a community
+Surviving success
 -------------------
 
   * Your module is a hit!
@@ -449,6 +442,8 @@ Things users are good at:
   * Filing feature requests
   * Requesting things like "documentation"
   * Finding more bugs
+^
+  * Funny how these match how you can help other contributors
 
 Harness your users
 ------------------
@@ -457,23 +452,6 @@ Harness your users
   * Show people how to help
   * Ask for pull requests
   * Guide people through the contribution process
-
-!SLIDE
-
-SUMMARY THINGY
-==============
-
-Write awesome modules
----------------------
-
-  * Separate logic and data
-  * Use semantic versioning
-  * Test everything
-
-Share awesome modules
----------------------
-
-  * Publish modules on the Puppet Forge
 
 !SLIDE
 
