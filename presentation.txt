@@ -1,0 +1,505 @@
+title: Writing & Sharing Great Modules
+description: 
+author: @nullfinch, Puppet Labs
+duration: 45
+
+Who is this guy?
+----------------
+
+  * On/Off Ops/Dev, ~8 years
+  * Operations Engineer @puppetlabs, 2 years
+  * Community Developer @puppetlabs, 3 months
+
+Things I do
+-----------
+
+  * puppet-network: cross-platform network configuration
+  * puppet-portage: Puppet ♥ Gentoo
+  * r10k: smarter Puppet deployment, powered by robots
+  * vagrant-hosts: it's always a DNS problem
+  * vagrant-pe_build: From zero to PE in `vagrant up`
+
+Other things I do
+-----------------
+
+  * Talk too fast
+  * If I become completely inintelligible
+  * *slow me down*
+
+!SLIDE
+
+Let's talk about modules
+========================
+
+BEST PRACTICES‽
+---------------
+
+  * Traditional development: 40+ years to mature
+  * Modern config. mgmt: 15 years, max
+  * Best practices haven't yet been established
+
+So where do we start?
+---------------------
+
+  * Separate your logic and configuration
+  * Know your interface
+  * Use semantic versioning
+  * Test everything
+
+!SLIDE
+
+Data/Logic separation
+========================
+
+Separate logic from data
+------------------------
+
+Logic != Data
+
+  * Example: configure a service on different platforms
+  * Shouldn't have to update every file in a module
+
+Package/file/service
+--------------------
+
+Humble beginnings for many modules
+
+    class mysql::server {
+      package { 'mysql-server':
+        ensure => present,
+      }
+
+      file { '/etc/mysql/my.cnf':
+        ensure  => present,
+        content => template('mysql/server/my.cnf.erb'),
+        require => Package['mysql-server'],
+      }
+
+      service { 'mysqld':
+        ensure    => running,
+        enable    => true,
+        subscribe => File['/etc/mysql/my.conf'],
+      }
+    }
+
+Problems with package/file/service
+----------------------------------
+
+  * Nothing inherently wrong
+  * Overly simple
+  * _Very_ static
+  * Generally requires overhaul for different platforms
+
+Rudimentary Data/Logic separation
+---------------------------------
+
+    class mysql::server {
+      include mysql::params
+
+      package { 'mysql-server':
+        name   => $mysql::params::server_package,
+        ensure => present,
+      }
+
+      file { 'my.cnf':
+        path    => $mysql::params::server_config,
+        ensure  => present,
+        source  => 'puppet:///modules/nrpe/nrpe.cfg',
+        require => Package['nagios-nrpe-server'],
+      }
+
+      service { 'mysql-server':
+        name      => $mysql::params::server_service,
+        ensure    => running,
+        enable    => true,
+        subscribe => File['my.cnf'],
+      }
+    }
+
+Hardcoding tunable values
+-------------------------
+
+  * Want to prevent people from reusing your modules?
+  * Hardcode everything!
+
+Using params, bad:
+------------------
+
+    class mysql::params {
+      $allow_hosts   = '0.0.0.0/0'
+      $root_user     = 'root'
+      # ¯\_(ツ)_/¯
+      $root_password = 'changeme'
+    }
+
+  * Params class = good
+  * Why is this bad?
+    * Site specific defaults?
+    * INSECURE DEFAULTS‽
+
+Using params, good:
+-------------------
+
+    class mysql::params(
+      $allow_hosts,   # Force the module user to fill this out
+      $root_password, # Fail fast rather than potentially use bad data
+      $root_user = 'root' # Sane default
+    ) {
+    }
+
+  * Force user to supply data
+  * Fail fast
+
+!SLIDE
+
+Data Binding
+============
+
+Data Binding
+------------
+
+  * New in Puppet 3: data binding
+  * Provides a method for configuring modules
+
+Using Data Binding
+------------------
+
+  * Define data in a data store
+    * file
+    * database
+    * Foreman
+  * Automatically load data in the relevant manifests
+
+Using Data Binding
+------------------
+
+    class mysql::params(
+      $allow_hosts,
+      $database_password,
+      $database_user = 'root'
+    ) {
+    }
+
+- - -
+
+    # $datadir/common.yaml
+    ---
+    mysql::params::allow_hosts: '10.126.8.0/24'
+^
+    # $datadir/qa.mysite.local.yaml
+    ---
+    mysql::params::allow_hosts: '10.134.8.0/24'
+
+!SLIDE
+
+Using modules as interfaces
+===========================
+
+Modules as interfaces
+---------------------
+
+  * Puppet simplifies management of services
+  * Defines how people interact with that service
+  * Puppet modules define an interface for that service
+^
+  * Creates two challenges
+    * What options are supported?
+    * What options should users configure?
+
+Be opinionated
+--------------
+
+  * Cannot make every option tunable
+  * You'll go insane
+^
+  * Require mandatory data
+  * Add parameters for frequently changed data
+  * Offer an 'override' option
+
+But other opinions are nice too
+-------------------------------
+
+  * You can't always support every option
+  * Allow people to directly insert their own configuration
+
+Override example: Partial Templates
+-----------------------------------
+
+  * Module provides template fragments
+  * User assembles these into a full config
+
+Creating a partial template
+---------------------------
+
+    <%%# nginx/templates/vhost/_listen.conf.erb %>
+    <%%# Configuration fragment for listening on IPv4 and IPv6 with SSL %>
+    <%% unless @sslonly -%>
+      listen   <%%= port %>;
+    <%%   if scope.lookupvar('::ipaddress6') -%>
+      listen   [::]:<%%= port %>;
+    <%%   end -%>
+    <%% end -%>
+
+    <%% if ssl -%>
+      listen   <%%= ssl_port %> ssl;
+    <%%   if scope.lookupvar('::ipaddress6') -%>
+      listen   [::]:<%%= ssl_port %> ssl;
+    <%%   end -%>
+    <%% end -%>
+
+Using partial templates
+-----------------------
+
+    Example: `my_nginx_app/templates/nginx-vhost.conf.erb`
+
+    server {
+    <%%= scope.function_template(['nginx/vhost/_listen.conf.erb']) %>
+
+      root /usr/share/empty;
+
+      location / {
+        proxy_pass <%%= @proto %>://workers;
+        proxy_redirect        off;
+        proxy_next_upstream   error timeout invalid_header http_500 http_503;
+        proxy_connect_timeout 5;
+      }
+    }
+
+!SLIDE
+
+SemVer
+======
+
+Without Semantic Versioning
+---------------------------
+
+### CHANGELOG
+
+  * 1.0.0 Initial release for managing cacti
+  * 1.1.1 Change server param to servername
+  * 1.1.2 Move params from cacti::data to cacti::params
+  * 1.2.0 Updated README
+  * 1.2.1 Drops support for CentOS 5
+  * 1.3.0 This module now manages munin
+  * 2.0.0 I can update versions whenever I want?
+  * 10.51.100 THIS IS AWESOME!
+  * -4.number.999999999999 I'VE CREATED A MONSTER
+
+Upgrading should be boring
+--------------------------
+
+  * API breaks mean upgrading is dangerous
+  * Nobody wants to upgrade if it means explosions
+  * Semantic versioning helps mitigate this
+
+What is SemVer?
+---------------
+
+  * Version strings should have meaning
+  * Releases match the format x.y.z
+  * Values indicate what's changed in that version
+
+Major Releases
+--------------
+
+Example: **x**.0.0
+
+Backwards incompatible changes
+
+  * Changing class names
+  * Changing parameter names
+  * Dropping platform support
+
+Minor Releases
+--------------
+
+Example: x.**y**.0
+
+Backwards compatible features
+
+  * Adding support for new platforms
+  * Adding parameters
+  * Adding features
+
+Patch Releases
+--------------
+
+Example: x.y.**z**
+
+  * Bugfixes
+  * Documentation
+  * Tests
+  * Anything that can't be called a feature
+
+What is public?
+---------------
+
+  * Publicly exposed classes
+  * Class parameters
+  * The final behavior of your class
+
+What is private?
+----------------
+
+  * The actual resources used in your classes and defines
+    * Resources themselves are implementation, not
+  * Classes that are documented as private
+    * If you document that a class is private, people shouldn't use it
+
+
+Safety in SemVer
+----------------
+
+  * SemVer takes the risk out of upgrading
+  * You can understand the implications of upgrading right away
+^
+  * How Puppet does it
+    * 3.1.1: Security fixes
+    * 3.2.0: External CA support, types & providers for OpenWRT
+    * 4.0.0: Tachyon based transport layer
+      * Not really.
+
+!SLIDE
+
+Make other people do your work
+==============================
+
+!SLIDE
+
+AKA
+===
+
+!SLIDE
+
+Reuse Modules
+=============
+
+Reuse Modules
+-------------
+
+  * Writing good code is hard.
+  * Make other people do your work.
+
+Get Dependencies from the Forge
+-------------------------------
+
+    grey% puppet module search postgres
+    Notice: Searching https://forge.puppetlabs.com ...
+    NAME                   DESCRIPTION
+    knowshan-phppgadmin    Install and configure phpPgAdmin
+    DropPod-postgres       A basic type for managing Postgres
+    camptocamp-pgconf      Manage postgresql.conf entries
+    inkling-postgresql     PostgreSQL defined resource types
+    akumria-postgresql     Install and configure the Postgresql
+    puppetlabs-postgresql  PostgreSQL defined resource types
+
+Collaborate on existing modules
+-------------------------------
+
+  * Lots of good modules are out there
+  * Encourage people to publish on the Forge
+  * Help improve existing modules
+
+!SLIDE
+
+Best Practices
+==============
+
+Documentation
+-------------
+
+  * README
+  * Examples
+
+Conforming to style
+-------------------
+
+  * Puppet Labs style guide
+  * puppet-lint
+  * http://www.puppetlinter.com/
+
+!SLIDE
+
+Testing
+=======
+
+Test your manifests with rspec-puppet
+-------------------------------------
+
+  * travis-ci.org
+
+!SLIDE
+
+Types and Providers
+===================
+
+Learn to love types and providers
+---------------------------------
+
+### Why types and providers are your friends
+
+### Test your types and providers
+
+!SLIDE
+
+Establish a Community
+=====================
+
+Recruit a community
+-------------------
+
+  * Your module is a hit!
+  * Prepare for a deluge of bug reports and feature requests
+
+Popularity = more work
+----------------------
+
+Things users are good at:
+
+  * Finding bugs
+  * Filing feature requests
+  * Requesting things like "documentation"
+  * Finding more bugs
+
+Harness your users
+------------------
+
+  * Bug reports = people care
+  * Show people how to help
+  * Ask for pull requests
+  * Guide people through the contribution process
+
+!SLIDE
+
+SUMMARY THINGY
+==============
+
+Write awesome modules
+---------------------
+
+  * Separate logic and data
+  * Use semantic versioning
+  * Test everything
+
+Share awesome modules
+---------------------
+
+  * Publish modules on the Puppet Forge
+
+!SLIDE
+
+END
+===
+
+### Questions?
+
+#### Comments?
+
+##### Snarky remarks?
+
+##### <small>Awkward silence?</small>
+
+Credits
+-------
+
+  * Presentation done with reveal.js
