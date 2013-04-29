@@ -25,7 +25,6 @@ css/theme/source/solarized.scss
 css/theme/source/moon.scss
 css/theme/default.css
 Gruntfile.js
-index.html
 js/reveal.min.js
 js/reveal.js
 lib/css/zenburn.css
