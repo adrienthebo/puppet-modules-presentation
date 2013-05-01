@@ -39,15 +39,16 @@
 
         <section>
           <h1><%= @headers['title'] %></h1>
-          <h3><%= @headers['description'] %></h3>
-          <p>
-          <small><%= @headers['author'] %></small>
-          </p>
+          <p><%= @headers['author'] %></p>
+          <p><small><%= @headers['contact'] %></small> </p>
         </section>
 
         <% @slides.each_with_index do |slide, index| %>
           <section id="slide-<%= index + 2 %>">
-            <%= slide.content %>
+          <%= slide.content.gsub(/<li>/, '<li class="fragment">') %>
+            <aside class="notes">
+              <%= slide.content %>
+            </aside>
           </section>
         <% end %>
 
