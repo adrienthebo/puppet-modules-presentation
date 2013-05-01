@@ -152,3 +152,52 @@ what options the user must specify, and make them mandatory parameters and don't
 specify a default. For everything else that the user should tune, add parameters
 but use sane defaults where you can. Where possible, try to use the application
 defaults if there's no good reason to tune them.
+
+The thing to come back to is that you're creating this interface for a service.
+So figure out, what's best for the users? What will make the most sense? How can
+this be a good, reusable module?
+
+And of course, there are times where you just can't offer sane options that
+configure everything. For instance, take nginx. There is no way that you will
+ever be able to create enough defines that a module user will never have to
+touch an nginx config file. Even if you could do it, what's the worth in that?
+
+In cases like this, allow people to directly inject their own configuration.
+Either offer the ability to configure an existing template, or allow people to
+insert their own template.
+
+A really good way to do this is with partial templates. Instead of trying to
+handle everything for the user, let them build what they need and figure out how
+to make this easier. Figure out what parts are repetitive and solve those, and
+let module users take those parts.
+
+This is a really quick example of partial templates. One of the gnarlier parts
+of nginx configurations is the listen directive. If you're doing ssl only,
+that's one thing. If you're doing ssl at all, that's another thing. Oh, and
+IPv6, gotta handle that too. And you have to do this for every single nginx
+vhost. So instead of making users supply this over and over, include partial
+templates like this.
+
+Inclusion is incredibly simple, too. Instead of calling the `template` function
+from a manifest, you can call it inside of another template. And voila! Partial
+templates!
+
+Next up is versioning. I'm sure we've all had to deal with someone constantly
+breaking APIs that you rely on, and it sucks.
+
+lulz.
+
+So upgrading should be boring. You want people to use new versions of your
+module because they have bugfixes and features and whatnot, but if there are API
+changes all the time then people are going to be afraid to upgrade. You should
+be able to look at a new version of a module and be able to understand the
+implication of upgrading without having to dig through source code.
+
+SemVer aims to help that. The idea is that we assign a specific meaning to the
+different components of a version string, so that you can look at different
+versions and immediately know what versions you can safely use and which ones
+might need some investigation before upgrading.
+
+SemVer makes upgrading unexciting, and that's exactly how it should be.
+
+
